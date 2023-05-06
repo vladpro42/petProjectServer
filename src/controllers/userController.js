@@ -2,6 +2,9 @@ import { User } from "../models/User.js";
 import CryptoJS from "crypto-js";
 
 import { validationResult } from "express-validator";
+import config from "../../config.js";
+
+
 class userController {
     async createUser(req, res) {
 
@@ -25,10 +28,8 @@ class userController {
             }
 
 
-            let encryptedPassword = CryptoJS.AES.encrypt(password, "secret key 123").toString();
+            let encryptedPassword = CryptoJS.AES.encrypt(password, config.secret2).toString();
 
-            //var bytes  = CryptoJS.AES.decrypt(ciphertext, 'secret key 123');
-            //var originalText = bytes.toString(CryptoJS.enc.Utf8);
 
             const person = await User.create({
                 email,

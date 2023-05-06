@@ -4,8 +4,9 @@ import { sequelize } from "./src/db/db.js"
 import { User } from "./src/models/User.js";
 import { Todo } from "./src/models/Todo.js";
 import { Icon } from "./src/models/Icon.js";
+import { authRouter } from "./src/routes/authRouter.js";
 
-    
+
 const PORT = process.env.PORT || 3001;
 
 const app = express();
@@ -30,7 +31,8 @@ Icon.sync().then(() => {
 })
 
 app.use(express.json());
-app.use("/api", userRouter)
+app.use("/api", userRouter);
+app.use("/auth", authRouter)
 
 
 app.get("/", (req, res) => {

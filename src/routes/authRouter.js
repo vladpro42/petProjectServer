@@ -3,10 +3,6 @@ import authController from "../controllers/authController.js";
 
 const router = new Router();
 
-router.get("/user/:id", authController.getUser)
-router.get("/user", authController.getUsers)
-router.post("/user", authController.createUser)
-router.put("/user", authController.updateUser)
-router.delete("/user/:id", authController.deleteUser)
-
+//router.post("/registration", authController.registration)
+router.post("/login", authController.login)
 export { router as authRouter }
