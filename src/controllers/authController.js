@@ -42,17 +42,68 @@ class AuthController {
     }
 
     async getUser(req, res) {
+        try {
+            const id = req.params.id
+
+            const [user] = await User.findAll({ where: { id } })
+
+            if (!user) {
+                res.status(400).json({ message: "Пользователь не найден" })
+                return
+            }
+
+            res.json(user.dataValues)
+        } catch (error) {
+            res.status(400).json({ message: error.message })
+        }
 
     }
 
-    getUsers(req, res) {
+    async getUsers(req, res) {
+        try {
+            const users = await User.findAll();
+            res.json(users)
+        } catch (error) {
+            res.status(400).json({ message: error.message })
+        }
     }
 
-    updateUser(req, res) {
+    async updateUser(req, res) {
+        try {
+            const { login, email } = req.body;
 
+            if (!email) {
+                res.status(400).json({ message: "Некоректный email" })
+            }
+
+            const [user] = await User.findAll({ where: { email: email } })
+
+            user.dataValues.login = login
+
+            await user.save();
+
+            res.json(user)
+
+        } catch (error) {
+            res.status(400).json({ message: error.message })
+        }
     }
 
-    deleteUser(req, res) {
+    async deleteUser(req, res) {
+        try {
+            const id = req.params.id
+
+            const [user] = await User.findAll({ where: { id } })
+
+            if (!user) {
+                res.status(400).json({ message: "Пользователь не найден" });
+                return
+            }
+            await user.destroy();
+            res.json(user.dataValues);
+        } catch (error) {
+            res.status(400).json({ message: error.message })
+        }
 
     }
 
