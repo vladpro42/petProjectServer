@@ -5,6 +5,7 @@ import { User } from "./src/models/User.js";
 import { Todo } from "./src/models/Todo.js";
 import { Icon } from "./src/models/Icon.js";
 import { authRouter } from "./src/routes/authRouter.js";
+import { postRouter } from "./src/routes/postRouter.js";
 
 
 const PORT = process.env.PORT || 3001;
@@ -22,7 +23,7 @@ User.sync().then(() => {
     console.log("синхронизация таблицы USER")
 })
 
-Todo.sync().then(() => {
+Todo.sync({ alter: true }).then(() => {
     console.log("синхронизация таблицы TODO")
 })
 
@@ -32,7 +33,8 @@ Icon.sync().then(() => {
 
 app.use(express.json());
 app.use("/api", userRouter);
-app.use("/auth", authRouter)
+app.use("/auth", authRouter);
+app.use("/todo", postRouter);
 
 
 app.get("/", (req, res) => {

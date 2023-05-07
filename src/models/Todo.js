@@ -8,6 +8,11 @@ const Todo = sequelize.define("Todo", {
         autoIncrement: true,
         primaryKey: true,
     },
+    "post_id": {
+        type: DataTypes.INTEGER,
+        unique: true,
+        allowNull: false,
+    },
     content: {
         type: DataTypes.STRING,
         allowNull: false,
