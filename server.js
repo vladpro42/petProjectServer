@@ -5,7 +5,7 @@ import { User } from "./src/models/User.js";
 import { Task } from "./src/models/Task.js";
 import { Icon } from "./src/models/Icon.js";
 import { authRouter } from "./src/routes/authRouter.js";
-import { postRouter } from "./src/routes/postRouter.js";
+import { taskRouter } from "./src/routes/taskRouter.js";
 import { Board } from "./src/models/Board.js";
 import { boardRouter } from "./src/routes/boardRouter.js";
 
@@ -50,7 +50,7 @@ app.use("/api", userRouter);
 app.use("/auth", authRouter);
 
 app.use("/board", boardRouter)
-app.use("/task", postRouter);
+app.use("/task", taskRouter);
 
 
 app.get("/", (req, res) => {

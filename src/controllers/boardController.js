@@ -2,7 +2,7 @@ import { Board } from "../models/Board.js";
 
 class BoardController {
 
-    async creacteBoard(req, res) {
+    async createBoard(req, res) {
         try {
 
             const { boardId, title } = req.body;
@@ -12,7 +12,7 @@ class BoardController {
                 boardId,
             });
 
-            res.json(board.toJSON())
+            res.json(board)
 
         } catch (error) {
             res.status(400).json({ message: error.message, error: error })

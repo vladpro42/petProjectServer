@@ -2,7 +2,7 @@ import { Board } from "../models/Board.js";
 import { Task } from "../models/Task.js";
 
 
-class CreatePostController {
+class TaskController {
 
     async createTask(req, res) {
         try {
@@ -82,4 +82,4 @@ class CreatePostController {
     }
 }
 
-export default new CreatePostController();
+export default new TaskController();
