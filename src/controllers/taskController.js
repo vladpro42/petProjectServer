@@ -6,17 +6,13 @@ class TaskController {
 
     async createTask(req, res) {
         try {
-            const { user_id, boardId, title, items } = req.body;
+            const { user_id, boardId, items } = req.body;
 
             const [item] = items
 
             const { content, task_id } = item
 
-
-            const board = await Board.create({
-                title,
-                boardId,
-            })
+            const board = await Board.findOne({ where: { boardId } })
 
 
             const task = await Task.create({
@@ -25,14 +21,7 @@ class TaskController {
                 user_id,
                 board_id: board.id
             })
-            res.json({
-                title: board.title,
-                boardId: board.boardId,
-                items: [
-                    { task: task.task_id, content: task.content }
-                ],
-                user_id: task.user_id,
-            })
+            res.json({message: "Таск успешно создан", task: task})
         } catch (error) {
             res.status(400).json({ message: error.message, error: error })
         }
