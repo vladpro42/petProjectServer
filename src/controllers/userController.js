@@ -1,6 +1,5 @@
 import { User } from "../models/User.js";
 import CryptoJS from "crypto-js";
-
 import { validationResult } from "express-validator";
 import config from "../../config.js";
 

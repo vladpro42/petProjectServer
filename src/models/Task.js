@@ -1,14 +1,15 @@
 import { sequelize } from "../db/db.js";
 import { DataTypes } from "sequelize";
 import { User } from "./User.js";
+import { Board } from "./Board.js";
 
-const Todo = sequelize.define("Todo", {
+const Task = sequelize.define("Task", {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
     },
-    "post_id": {
+    task_id: {
         type: DataTypes.INTEGER,
         unique: true,
         allowNull: false,
@@ -24,7 +25,14 @@ const Todo = sequelize.define("Todo", {
             key: "id"
         }
     },
+    board_id: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Board,
+            key: "id",
+        }
+    }
 
 })
 
-export { Todo }
+export { Task }

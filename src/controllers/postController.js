@@ -1,18 +1,38 @@
-import { Todo } from "../models/Todo.js";
+import { Board } from "../models/Board.js";
+import { Task } from "../models/Task.js";
 
 
 class CreatePostController {
 
-    async createPost(req, res) {
+    async createTask(req, res) {
         try {
-            const { content, id, user_id } = req.body;
+            const { user_id, boardId, title, items } = req.body;
 
-            const post = await Todo.create({
-                content,
-                post_id: id,
-                user_id: user_id,
+            const [item] = items
+
+            const { content, task_id } = item
+
+
+            const board = await Board.create({
+                title,
+                boardId,
             })
-            res.json(post)
+
+
+            const task = await Task.create({
+                content,
+                task_id,
+                user_id,
+                board_id: board.id
+            })
+            res.json({
+                title: board.title,
+                boardId: board.boardId,
+                items: [
+                    { task: task.task_id, content: task.content }
+                ],
+                user_id: task.user_id,
+            })
         } catch (error) {
             res.status(400).json({ message: error.message, error: error })
         }
@@ -22,7 +42,7 @@ class CreatePostController {
     async getPost(req, res) {
         /*  try {
              const { content, id } = req.body;
-             const post = await Todo.create({
+             const post = await Task.create({
                  content,
                  post_id: id,
              })
@@ -34,8 +54,11 @@ class CreatePostController {
 
     async getPosts(req, res) {
         try {
-            const posts = await Todo.findAll();
+            const posts = await Task.findAll();
+            const board = await Board.findAll();
 
+            console.log(board.toJson(), "board")
+            console.log(posts.toJson(), "posts")
             res.json(posts)
         } catch (error) {
             res.status(400).json({ message: error.message, error: error })
@@ -51,7 +74,7 @@ class CreatePostController {
             const post_id = +req.params.post_id;
 
 
-            const deletePost = await Todo.destroy({ where: { post_id } })
+            const deletePost = await Task.destroy({ where: { post_id } })
             res.json("успешно удален")
         } catch (error) {
             res.status(400).json({ message: error.message, error: error })
