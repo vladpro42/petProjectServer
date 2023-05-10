@@ -1,5 +1,7 @@
+import { where } from "sequelize";
 import { Board } from "../models/Board.js";
 import { Task } from "../models/Task.js";
+import { User } from "../models/User.js";
 
 
 class TaskController {
@@ -21,34 +23,45 @@ class TaskController {
                 user_id,
                 board_id: board.id
             })
-            res.json({message: "Таск успешно создан", task: task})
+            res.json({ message: "Таск успешно создан", task: task })
         } catch (error) {
             res.status(400).json({ message: error.message, error: error })
         }
 
     }
 
-    async getPost(req, res) {
-        /*  try {
-             const { content, id } = req.body;
-             const post = await Task.create({
-                 content,
-                 post_id: id,
-             })
-             res.json(post)
-         } catch (error) {
-             res.status(400).json({ message: error.message, error: error })
-         } */
-    }
-
-    async getPosts(req, res) {
+    async getTasks(req, res) {
         try {
-            const posts = await Task.findAll();
+            const tasks = await Task.findAll();
             const board = await Board.findAll();
 
-            console.log(board.toJson(), "board")
-            console.log(posts.toJson(), "posts")
-            res.json(posts)
+            async function getAuthor(id) {
+                const user = await User.findOne({ where: { id: id } })
+
+                return user.login
+            }
+
+            const boards = board.map(item => {
+                return {
+                    boardId: item.boardId,
+                    title: item.title,
+
+                    items: tasks.map(child => {
+
+                        if (child.board_id === item.id) {
+
+                            return { task_id: child.task_id, content: child.content, author: child.user_id }
+                        }
+                    }).filter(child => child !== null && child !== undefined)
+
+                }
+            });
+
+
+
+
+
+            res.json(boards)
         } catch (error) {
             res.status(400).json({ message: error.message, error: error })
         }
