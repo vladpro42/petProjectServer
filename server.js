@@ -7,6 +7,7 @@ import { Icon } from "./src/models/Icon.js";
 import { authRouter } from "./src/routes/authRouter.js";
 import { postRouter } from "./src/routes/postRouter.js";
 import { Board } from "./src/models/Board.js";
+import { boardRouter } from "./src/routes/boardRouter.js";
 
 
 const PORT = process.env.PORT || 3001;
@@ -47,6 +48,8 @@ Board.sync().then(() => {
 app.use(express.json());
 app.use("/api", userRouter);
 app.use("/auth", authRouter);
+
+app.use("/board", boardRouter)
 app.use("/task", postRouter);
 
 
