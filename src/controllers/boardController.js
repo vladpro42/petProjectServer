@@ -38,7 +38,7 @@ class BoardController {
             const id = +req.params.id;
 
             if (!id) {
-                throw new Error("Некоректный id");
+                throw new Error("Некорректный id");
             }
 
             const board = await Board.findOne({ where: id });
