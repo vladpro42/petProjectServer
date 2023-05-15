@@ -34,6 +34,21 @@ class BoardController {
     }
 
     async deleteBoard(req, res) {
+        try {
+            const id = +req.params.id;
+
+            if (!id) {
+                throw new Error("Некоректный id");
+            }
+
+            const board = await Board.findOne({ where: id });
+
+            await board.destroy();
+
+            res.json({ message: "Успешно удален", target: board });
+        } catch (error) {
+            res.status(400).json({ message: error.message, error: error })
+        }
 
     }
 }

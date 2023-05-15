@@ -25,29 +25,12 @@ Task.belongsTo(Board);
 
 
 
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync({ alter: true }).then(() => {
     console.log("Tables have been created");
 }).catch(err => console.log(err));
 
-
-
 // await sequelize.sync();
 
-/* User.sync().then(() => {
-    console.log("синхронизация таблицы USER")
-})
-
-Task.sync({ alter: true }).then(() => {
-    console.log("синхронизация таблицы Task")
-})
-
-Icon.sync().then(() => {
-    console.log("синхронизация таблицы Icon")
-})
-
-Board.sync().then(() => {
-    console.log("синхронизация таблицы Board")
-}) */
 
 app.use(express.json());
 app.use("/api", userRouter);
