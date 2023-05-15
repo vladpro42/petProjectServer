@@ -1,7 +1,9 @@
-import { where } from "sequelize";
+import { Sequelize } from "sequelize";
 import { Board } from "../models/Board.js";
 import { Task } from "../models/Task.js";
 import { User } from "../models/User.js";
+import { sequelize } from "../db/db.js";
+import { Board_Task } from "../models/Board_Task.js";
 
 
 class TaskController {
@@ -21,7 +23,8 @@ class TaskController {
                 content,
                 task_id,
                 user_id,
-                board_id: board.id
+                board_id: board.id,
+                //BoardId: board.id
             })
             res.json({ message: "Таск успешно создан", task: task })
         } catch (error) {
@@ -32,34 +35,29 @@ class TaskController {
 
     async getTasks(req, res) {
         try {
-            const tasks = await Task.findAll();
-            const board = await Board.findAll();
 
-            async function getAuthor(id) {
-                const user = await User.findOne({ where: { id: id } })
-
-                return user.login
-            }
-
-            const boards = board.map(item => {
+            /* const boards = board.map(item => {
                 return {
                     boardId: item.boardId,
                     title: item.title,
 
-                    items: tasks.map(child => {
 
+                    items: tasks.map(async (child) => {
                         if (child.board_id === item.id) {
+                            console.log({ task_id: child.task_id, content: child.content, author: await getAuthor(child.user_id) })
+                            await Promise.all(arr.map(async el => ++el))
+                            return {
+                                task_id: child.task_id, content: child.content, author: await getAuthor(child.user_id)
+                            }
 
-                            return { task_id: child.task_id, content: child.content, author: child.user_id }
                         }
                     }).filter(child => child !== null && child !== undefined)
-
                 }
-            });
+            }); */
 
 
-
-
+            const boards = await Board.findAll({ include: Task });
+            console.log(JSON.stringify(boards, null, 2))
 
             res.json(boards)
         } catch (error) {

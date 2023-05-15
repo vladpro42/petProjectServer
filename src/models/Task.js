@@ -25,13 +25,13 @@ const Task = sequelize.define("Task", {
             key: "id"
         }
     },
-    board_id: {
+    /* board_id: {
         type: DataTypes.INTEGER,
         references: {
             model: Board,
             key: "id",
         }
-    }
+    } */
 
 })
 
