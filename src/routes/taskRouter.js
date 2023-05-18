@@ -5,6 +5,6 @@ const router = new Router();
 
 router.post("/", TaskController.createTask)
 router.get("/", TaskController.getTasks)
-router.delete("/:id", TaskController.deletePost)
+router.delete("/:id", TaskController.deleteTask)
 
 export { router as taskRouter }

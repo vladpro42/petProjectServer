@@ -39,8 +39,6 @@ class TaskController {
                 }
             });
 
-            console.log(boards)
-
             res.json(boards)
         } catch (error) {
             res.status(400).json({ message: error.message, error: error })
@@ -51,18 +49,20 @@ class TaskController {
 
     }
 
-    async deletePost(req, res) {
+    async deleteTask(req, res) {
         try {
-            const post_id = +req.params.post_id;
+            const id = +req.params.id;
 
-            if (!post_id) {
+            if (!task_id) {
                 throw new Error("Некорректный id")
             }
 
-            const deletePost = await Task.destroy({ where: { post_id } })
-            res.json({ message: "Успешно удален", target: deletePost })
+            const task = await Task.findOne({ where: id })
+            const removeTask = await task.destroy();
+
+            res.json({ message: "Успешно удален", removeTask: removeTask })
         } catch (error) {
-            res.status(400).json({ message: error.message, error: error })
+            res.status(500).json({ message: error.message, error: error })
         }
     }
 }

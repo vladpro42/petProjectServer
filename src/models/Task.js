@@ -10,7 +10,7 @@ const Task = sequelize.define("Task", {
         primaryKey: true,
     },
     task_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         unique: true,
         allowNull: false,
     },
