@@ -6,7 +6,7 @@ import { authRouter } from "./src/routes/authRouter.js";
 import { taskRouter } from "./src/routes/taskRouter.js";
 import { Board } from "./src/models/Board.js";
 import { boardRouter } from "./src/routes/boardRouter.js";
-import { Board_Task } from "./src/models/Board_Task.js";
+import cors from "cors"
 
 
 const PORT = process.env.PORT || 3001;
@@ -20,7 +20,7 @@ try {
     console.error('Unable to connect to the database:', error);
 }
 
-Board.hasMany(Task, {foreignKey: "board_id"});
+Board.hasMany(Task, { foreignKey: "board_id", as: "items" });
 Task.belongsTo(Board);
 
 
@@ -31,6 +31,13 @@ sequelize.sync({ alter: true }).then(() => {
 
 // await sequelize.sync();
 
+const corsOptions = {
+    origin: '*',
+    credentials: true,
+    optionSuccessStatus: 200,
+}
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use("/api", userRouter);

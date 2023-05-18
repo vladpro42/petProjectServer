@@ -32,7 +32,14 @@ class TaskController {
     async getTasks(req, res) {
         try {
 
-            const boards = await Board.findAll({ include: Task });
+            const boards = await Board.findAll({
+                include: {
+                    model: Task,
+                    as: "items"
+                }
+            });
+
+            console.log(boards)
 
             res.json(boards)
         } catch (error) {
