@@ -1,11 +1,10 @@
 import { sequelize } from "../db/db.js";
 import { DataTypes } from "sequelize";
-import { User } from "./User.js";
 import { Board } from "./Board.js";
 import { Task } from "./Task.js";
 
-const Board_Task = sequelize.define("Board_Task", {
-    
+const Board_Task = sequelize.define("board_task", {
+
     TaskId: {
         type: DataTypes.INTEGER,
         references: {

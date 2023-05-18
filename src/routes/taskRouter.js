@@ -3,8 +3,9 @@ import TaskController from "../controllers/taskController.js";
 
 const router = new Router();
 
-router.post("/", TaskController.createTask)
-router.get("/", TaskController.getTasks)
-router.delete("/:id", TaskController.deleteTask)
+router.post("/task/", TaskController.createTask)
+router.get("/task/", TaskController.getTasks)
+router.delete("/task/:id", TaskController.deleteTask)
+router.put("/task/", TaskController.updateTask)
 
 export { router as taskRouter }

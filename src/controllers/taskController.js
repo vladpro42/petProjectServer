@@ -6,23 +6,19 @@ class TaskController {
 
     async createTask(req, res) {
         try {
-            const { user_id, boardId, items } = req.body;
-
-            const [item] = items
-
-            const { content, task_id } = item
+            const { userId, boardId, content, id } = req.body;
 
             const board = await Board.findOne({ where: { boardId } })
 
 
             const task = await Task.create({
                 content,
-                task_id,
-                user_id,
-                board_id: board.id,
-                //BoardId: board.id
+                id,
+                userId,
+                boardId: board.id,
             })
-            res.json({ message: "Таск успешно создан", task: task })
+
+            res.json({ message: "Таск успешно создан", task, })
         } catch (error) {
             res.status(400).json({ message: error.message, error: error })
         }
@@ -45,22 +41,43 @@ class TaskController {
         }
     }
 
-    async updatePost(req, res) {
+    async updateTask(req, res) {
+        try {
+            const { userId, boardId, content, id } = req.body;
 
+            if (!boardId && !content) {
+                throw new Error("Некоректные данные")
+            }
+
+            const task = await Task.findOne({ where: { id: +id } });
+
+            if (!task) {
+                res.status(400).json({ message: "Таск не найден" })
+            }
+
+            task.set({
+                boardId,
+                content,
+            })
+
+            await task.save();
+
+            res.json(task);
+
+        } catch (error) {
+            res.status(400).json({ message: error.message, error: error })
+        }
     }
 
     async deleteTask(req, res) {
         try {
-            const id = +req.params.id;
+            const id = req.params.id;
 
-            if (!task_id) {
-                throw new Error("Некорректный id")
-            }
+            const task = await Task.findOne({ where: { id: +id } })
 
-            const task = await Task.findOne({ where: id })
             const removeTask = await task.destroy();
 
-            res.json({ message: "Успешно удален", removeTask: removeTask })
+            res.json({ message: "Успешно удален", removeTask })
         } catch (error) {
             res.status(500).json({ message: error.message, error: error })
         }

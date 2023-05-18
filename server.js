@@ -20,7 +20,7 @@ try {
     console.error('Unable to connect to the database:', error);
 }
 
-Board.hasMany(Task, { foreignKey: "board_id", as: "items" });
+Board.hasMany(Task, { foreignKey: "boardId", as: "items" });
 Task.belongsTo(Board);
 
 
@@ -28,8 +28,6 @@ Task.belongsTo(Board);
 sequelize.sync({ alter: true }).then(() => {
     console.log("Tables have been created");
 }).catch(err => console.log(err));
-
-// await sequelize.sync();
 
 const corsOptions = {
     origin: '*',
@@ -43,9 +41,8 @@ app.use(express.json());
 app.use("/api", userRouter);
 app.use("/auth", authRouter);
 
-app.use("/board", boardRouter)
-app.use("/task", taskRouter);
-
+app.use("/api", boardRouter)
+app.use("/api", taskRouter);
 
 app.get("/", (req, res) => {
     res.json("hello world")

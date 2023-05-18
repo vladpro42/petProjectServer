@@ -1,7 +1,7 @@
 import { sequelize } from "../db/db.js";
 import { DataTypes } from "sequelize";
 
-const Board = sequelize.define("Board", {
+const Board = sequelize.define("board", {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,

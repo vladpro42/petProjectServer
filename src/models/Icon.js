@@ -2,19 +2,19 @@ import { sequelize } from "../db/db.js";
 import { DataTypes } from "sequelize";
 import { User } from "./User.js";
 
-const Icon = sequelize.define("Icon", {
+const Icon = sequelize.define("icon", {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
     },
-    file_name: {
+    fileName: {
         type: DataTypes.STRING,
     },
     src: {
         type: DataTypes.STRING,
     },
-    user_id: {
+    userId: {
         type: DataTypes.INTEGER,
         references: {
             model: User,

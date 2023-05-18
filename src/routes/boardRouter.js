@@ -3,8 +3,9 @@ import boardController from "../controllers/boardController.js";
 
 const router = new Router();
 
-router.post("/", boardController.createBoard)
-router.get("/", boardController.getBoards)
-router.delete("/:id", boardController.deleteBoard)
+router.post("/board/", boardController.createBoard)
+router.get("/board/", boardController.getBoards)
+router.put("/board/", boardController.updateBoard)
+router.delete("/board/:id", boardController.deleteBoard)
 
 export { router as boardRouter }

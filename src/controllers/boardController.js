@@ -30,7 +30,18 @@ class BoardController {
     }
 
     async updateBoard(req, res) {
+        try {
+            const { title } = req.body;
+            const id = req.params.id;
 
+            const board = await Board.findOne({ where: id });
+            board.title = title;
+            await board.save();
+
+            res.json(board)
+        } catch (error) {
+            res.status(400).json({ message: error.message, error });
+        }
     }
 
     async deleteBoard(req, res) {
