@@ -4,7 +4,7 @@ import { User } from "./User.js";
 
 const Task = sequelize.define("task", {
     id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         autoIncrement: true,
         primaryKey: true,
     },
@@ -19,6 +19,6 @@ const Task = sequelize.define("task", {
             key: "id"
         }
     },
-})
+}, {timestamps: false})
 
 export { Task }

@@ -2,47 +2,51 @@ import { User } from "../models/User.js";
 import CryptoJS from "crypto-js";
 import { validationResult } from "express-validator";
 import config from "../../config.js";
-
+import userService from "../services/authService.js";
 
 class userController {
-    async createUser(req, res) {
+    /*  async createUser(req, res) {
+ 
+         try {
+             const errors = validationResult(req);
+             if (!errors.isEmpty()) {
+                 return res.status(400), json({ message: "Ошиба при регистрации", errors })
+             }
+             const { email, login, password } = req.body;
+ 
+             const candidate = await User.findAll({
+                 where: {
+                     email,
+                     login,
+                 }
+             })
+ 
+             if (candidate.length) {
+                 res.status(400).json({ message: "Пользователь с тиким email или login уже существует" })
+                 return;
+             }
+ 
+ 
+             let encryptedPassword = CryptoJS.AES.encrypt(password, config.secret2).toString();
+ 
+ 
+             const person = await User.create({
+                 email,
+                 login,
+                 password: encryptedPassword,
+             });
+ 
+             res.status(200).json({ message: "Пользователь успешно зарегестрирован" })
+ 
+         } catch (error) {
+ 
+             res.status(400).json({ message: "Registration error" })
+         }
+ 
+     } */
 
-        try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(400), json({ message: "Ошиба при регистрации", errors })
-            }
-            const { email, login, password } = req.body;
-
-            const candidate = await User.findAll({
-                where: {
-                    email,
-                    login,
-                }
-            })
-
-            if (candidate.length) {
-                res.status(400).json({ message: "Пользователь с тиким email или login уже существует" })
-                return;
-            }
-
-
-            let encryptedPassword = CryptoJS.AES.encrypt(password, config.secret2).toString();
-
-
-            const person = await User.create({
-                email,
-                login,
-                password: encryptedPassword,
-            });
-
-            res.status(200).json({ message: "Пользователь успешно зарегестрирован" })
-
-        } catch (error) {
-
-            res.status(400).json({ message: "Registration error" })
-        }
-
+    async createUser(req, res, next) {
+       
     }
 
     async getUser(req, res) {

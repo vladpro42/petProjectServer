@@ -1,51 +1,77 @@
-import { Op } from "sequelize";
-import { User } from "../models/User.js";
-import CryptoJS from "crypto-js";
-import config from "../../config.js";
-import { generateAccesssToken } from "../utils/utils.js"
+import userService from "../services/authService.js";
+import { validationResult } from "express-validator";
+import APIError from "../exseptions/APIError.js";
+import authService from "../services/authService.js";
 
 
 class AuthController {
 
-    async login(req, res) {
-
+    async registration(req, res, next) {
         try {
-            const { login, email, password } = req.body;
-
-            const userSignIn = login || email;
-
-            if (!userSignIn) {
-                return res.status(400).json({ message: "Некоректный логин или емайл" })
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return next(APIError.BadRequest("Ошибка при валидации", errors.array()))
             }
+            const { email, password } = req.body;
+            const userData = await userService.registration(email, password);
+            res.cookie("refreshToken", userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
+            return res.json(userData)
+        } catch (error) {
+            next(error)
+        }
+    }
 
-            const candidate = await User.findAll({
-                where: {
-                    [Op.or]: [
-                        { login: userSignIn },
-                        { email: userSignIn }
-                    ]
-                }
-            })
+    async login(req, res, next) {
+        try {
+            const { email, password } = req.body
+            const userData = await authService.login(email, password);
+            //res.header ("Access-Control-Allow-Credentials", true);
+            res.cookie("refresToken", userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
+            return res.json(userData)
+        } catch (error) {
+            next(error)
+        }
+    }
 
-            if (!candidate.length) {
-                return res.status(400).json({ message: "Пользователь не найден" })
-            }
-            const [user] = candidate
-            const bytes = CryptoJS.AES.decrypt(user.dataValues.password, config.secret2);
-            const originalPassword = bytes.toString(CryptoJS.enc.Utf8);
+    async logout(req, res, next) {
+        try {
+            const { refreshToken } = req.cookies;
+            const token = await userService.logout(refreshToken)
+            res.clearCookie("refreshToken");
+            return res.json(token)
+        } catch (error) {
+            next(error)
+        }
+    }
+    async activate(req, res, next) {
+        try {
+            const activationLink = req.params.link;
+            await userService.activate(activationLink)
+            return res.redirect(process.env.CLIENT_URL)
+        } catch (error) {
+            next(error)
+        }
+    }
+    async refresh(req, res, next) {
+        try {
+            const { refreshToken } = req.cookies
+            const userData = await authService.refresh(refreshToken);
+            res.cookie("refreshToken", userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
+            return res.json(userData)
+        } catch (error) {
+            next(error)
+        }
+    }
 
-            if (originalPassword !== password) {
-                return res.status(400).json({ message: "неправильный логи или пароль" })
-            }
-
-            const token = generateAccesssToken(candidate.id)
-            res.json({ token })
+    async getUsers(req, res) {
+        try {
+            return res.json([1, 2, 4])
 
         } catch (error) {
-            res.status(400).json({ error: error })
+            return res.json("Ошибка")
         }
-
     }
+
 }
 
 

@@ -46,13 +46,17 @@ class BoardController {
 
     async deleteBoard(req, res) {
         try {
-            const id = +req.params.id;
+            const id = req.params.id;
 
             if (!id) {
                 throw new Error("Некорректный id");
             }
 
-            const board = await Board.findOne({ where: id });
+            const board = await Board.findOne({
+                where: {
+                    boardId: id
+                }
+            });
 
             await board.destroy();
 

@@ -10,7 +10,6 @@ class TaskController {
 
             const board = await Board.findOne({ where: { boardId } })
 
-
             const task = await Task.create({
                 content,
                 id,

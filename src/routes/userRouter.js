@@ -7,8 +7,7 @@ const router = new Router();
 router.get("/user/:id", userController.getUser)
 router.get("/user", userController.getUsers)
 router.post("/user", [
-    check("email", "Емаил должен быть уникальным").notEmpty().isEmail(),
-    check("login").notEmpty()
+    check("email", "Емаил должен быть уникальным").isEmail()
 ], userController.createUser)
 router.put("/user", userController.updateUser)
 router.delete("/user/:id", userController.deleteUser)
