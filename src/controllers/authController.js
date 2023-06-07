@@ -72,6 +72,16 @@ class AuthController {
         }
     }
 
+    async checkToken(req, res, next) {
+        try {
+            const token = req.params.token;
+            const userData = validateAccessToken(token);
+            res.json({ message: "Token is valid", valid: userData })
+        } catch (error) {
+            next(error)
+        }
+    }
+
 }
 
 

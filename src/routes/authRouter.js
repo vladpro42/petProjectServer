@@ -14,6 +14,7 @@ router.post("/logout", authController.logout)
 router.get("/activate/:link", authController.activate)
 router.get("/refresh", authController.refresh)
 router.get("/something", authMiddlware, authController.getUsers)
+router.get("/checkToken/:token", authMiddlware, authController.getUsers)
 
 
 export { router as authRouter }
