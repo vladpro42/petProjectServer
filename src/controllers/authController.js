@@ -26,7 +26,7 @@ class AuthController {
             const { email, password } = req.body
             const userData = await authService.login(email, password);
             //res.header ("Access-Control-Allow-Credentials", true);
-            res.cookie("refresToken", userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
+            res.cookie("refreshToken", userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
             return res.json(userData)
         } catch (error) {
             next(error)

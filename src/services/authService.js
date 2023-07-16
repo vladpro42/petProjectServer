@@ -60,14 +60,11 @@ class AuthService {
 
     async refresh(refreshToken) {
 
-        console.log(refreshToken, "YES")
         if (!refreshToken) {
             throw APIError.UnAuthorizedError();
         }
         const userData = await tokenService.validateRefreshToken(refreshToken);
-        console.log(userData, "YES")
         const tokenFromDb = await tokenService.findToken(refreshToken)
-        console.log(tokenFromDb)
 
         if (!userData || !tokenFromDb) {
             throw APIError.UnAuthorizedError();

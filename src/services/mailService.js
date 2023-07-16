@@ -5,7 +5,6 @@ import nodemailer from "nodemailer"
 class MailService {
 
     constructor() {
-        console.log(process.env.SMPT_PORT, process.env.SMPT_HOST, process.env.API_URL)
         this.transporter = nodemailer.createTransport({
             service: "gmail",
             port: +process.env.SMPT_PORT,

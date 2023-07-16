@@ -5,7 +5,7 @@ const router = new Router();
 
 router.post("/board/", boardController.createBoard)
 router.get("/board/", boardController.getBoards)
-router.put("/board/", boardController.updateBoard)
+router.put("/board/", boardController.moveBoard)
 router.delete("/board/:id", boardController.deleteBoard)
 
 export { router as boardRouter }

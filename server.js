@@ -41,7 +41,6 @@ sequelize.sync({ alter: true }).then(() => {
 
 
 
-
 app.use("/api", userRouter);
 app.use("/api", authRouter);
 

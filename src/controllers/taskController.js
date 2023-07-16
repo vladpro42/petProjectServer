@@ -1,5 +1,6 @@
 import { Board } from "../models/Board.js";
 import { Task } from "../models/Task.js";
+import TaskService from "../services/taskService.js";
 
 
 class TaskController {
@@ -26,14 +27,7 @@ class TaskController {
 
     async getTasks(req, res) {
         try {
-
-            const boards = await Board.findAll({
-                include: {
-                    model: Task,
-                    as: "items"
-                }
-            });
-
+            const boards = await TaskService.getTasks();
             res.json(boards)
         } catch (error) {
             res.status(400).json({ message: error.message, error: error })
@@ -48,11 +42,7 @@ class TaskController {
                 throw new Error("Некоректные данные")
             }
 
-            const task = await Task.findOne({ where: { id: +id } });
-
-            if (!task) {
-                res.status(400).json({ message: "Таск не найден" })
-            }
+            const task = await TaskService.findTask(id)
 
             task.set({
                 boardId,

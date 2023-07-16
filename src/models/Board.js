@@ -15,6 +15,10 @@ const Board = sequelize.define("board", {
         type: DataTypes.STRING,
         allowNull: false,
     },
-}, {timestamps: false})
+    order: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    }
+}, { timestamps: false })
 
 export { Board }
